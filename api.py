@@ -23,7 +23,7 @@ class TTSRequest(BaseModel):
 
 @app.post("/tts")
 async def generate_audio(request: TTSRequest):
-    if (not request.text and not request.voice) or (not not request.ssml):
+    if (not request.text and not request.voice) or (not request.ssml):
         return JSONResponse(status_code=400, content={"message": "参数错误"})
 
     text = request.text
