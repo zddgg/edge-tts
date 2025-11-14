@@ -10,7 +10,6 @@ from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
 from src.edge_tts import Communicate, list_voices
-from src.edge_tts.edge_tts_client import EdgeTTSClient
 
 app = FastAPI()
 
@@ -18,24 +17,18 @@ app = FastAPI()
 class TTSRequest(BaseModel):
     text: Optional[str] = Field(default=None)
     voice: Optional[str] = Field(default=None)
-    ssml: Optional[str] = Field(default=None)
 
 
 @app.post("/tts")
 async def generate_audio(request: TTSRequest):
-    if (not request.text and not request.voice) or (not request.ssml):
+    if not request.text and not request.voice:
         return JSONResponse(status_code=400, content={"message": "参数错误"})
 
     text = request.text
     voice = request.voice
-    ssml = request.ssml
 
     try:
-        if request.ssml:
-            communicate = EdgeTTSClient(ssml)
-        else:
-            communicate = Communicate(text, voice)
-
+        communicate = Communicate(text, voice)
         audio_stream = io.BytesIO()
 
         async for chunk in communicate.stream():
