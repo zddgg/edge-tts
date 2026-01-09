@@ -6,6 +6,7 @@ from .communicate import Communicate
 from .submaker import SubMaker
 from .version import __version__, __version_info__
 from .voices import VoicesManager, list_voices
+from .edge_tts_client import EdgeTTSClient
 
 __all__ = [
     "Communicate",
@@ -15,4 +16,5 @@ __all__ = [
     "__version_info__",
     "VoicesManager",
     "list_voices",
+    "EdgeTTSClient",
 ]
